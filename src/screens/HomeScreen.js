@@ -1,7 +1,8 @@
 /** @format */
 
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { listProducts } from '../store/actions/viewSneakers.js';
 import {
   Image,
   StyleSheet,
@@ -9,10 +10,22 @@ import {
   View,
   Dimensions,
   TextInput,
+  SafeAreaView,
+  StatusBar,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import ProductCards from '../components/Cards/ProductCards';
 
-function HomeScreen(props) {
+const HomeScreen = (props) => {
+  const dispatch = useDispatch();
+
+  const productList = useSelector((state) => state.productsList);
+  const { loading, error, products } = productList;
+
+  useEffect(() => {
+    dispatch(listProducts());
+  }, [dispatch]);
+
   return (
     <View style={styles.container}>
       <View style={styles.homeHeader}>
@@ -32,107 +45,16 @@ function HomeScreen(props) {
         />
       </View>
 
-      <View style={styles.productCard}>
-        <View style={styles.productImageHolder}>
-          <Image
-            style={styles.productImage}
-            source={require('../assets/air-zoom-pegasus-37-mens-running-shoe-KLvDcj.jpeg')}
-          />
-        </View>
-
-        <View style={styles.productInformation}>
-          <Text style={styles.cardHeader}>Nike One</Text>
-          <Text style={styles.cardModel}>Nike</Text>
-          <Text style={styles.cardReleaseDate}>November 23, 2021</Text>
-          <Text style={styles.cardPrice}>30 $</Text>
-        </View>
-
-        <View style={styles.productSlectionBtn}>
-          <MaterialCommunityIcons
-            name="chevron-right"
-            style={styles.rightIcon}
-          />
-        </View>
-      </View>
-
-      <View style={styles.productCard}>
-        <View style={styles.productImageHolder}>
-          <Image
-            style={styles.productImage}
-            source={require('../assets/air-zoom-pegasus-37-mens-running-shoe-KLvDcj.jpeg')}
-          />
-        </View>
-
-        <View style={styles.productInformation}>
-          <Text style={styles.cardHeader}>Nike One</Text>
-          <Text style={styles.cardModel}>Nike</Text>
-          <Text style={styles.cardReleaseDate}>November 23, 2021</Text>
-          <Text style={styles.cardPrice}>30 $</Text>
-        </View>
-
-        <View style={styles.productSlectionBtn}>
-          <MaterialCommunityIcons
-            name="chevron-right"
-            style={styles.rightIcon}
-          />
-        </View>
-      </View>
-
-      <View style={styles.productCard}>
-        <View style={styles.productImageHolder}>
-          <Image
-            style={styles.productImage}
-            source={require('../assets/air-zoom-pegasus-37-mens-running-shoe-KLvDcj.jpeg')}
-          />
-        </View>
-
-        <View style={styles.productInformation}>
-          <Text style={styles.cardHeader}>Nike One</Text>
-          <Text style={styles.cardModel}>Nike</Text>
-          <Text style={styles.cardReleaseDate}>November 23, 2021</Text>
-          <Text style={styles.cardPrice}>30 $</Text>
-        </View>
-
-        <View style={styles.productSlectionBtn}>
-          <MaterialCommunityIcons
-            name="chevron-right"
-            style={styles.rightIcon}
-          />
-        </View>
-      </View>
-
-      <View style={styles.productCard}>
-        <View style={styles.productImageHolder}>
-          <Image
-            style={styles.productImage}
-            source={require('../assets/air-zoom-pegasus-37-mens-running-shoe-KLvDcj.jpeg')}
-          />
-        </View>
-
-        <View style={styles.productInformation}>
-          <Text style={styles.cardHeader}>Nike One</Text>
-          <Text style={styles.cardModel}>Nike</Text>
-          <Text style={styles.cardReleaseDate}>November 23, 2021</Text>
-          <Text style={styles.cardPrice}>30 $</Text>
-        </View>
-
-        <View style={styles.productSlectionBtn}>
-          <MaterialCommunityIcons
-            name="chevron-right"
-            style={styles.rightIcon}
-          />
-        </View>
-      </View>
+      <ProductCards />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    top: 80,
   },
 
   homeHeader: {
@@ -146,6 +68,9 @@ const styles = StyleSheet.create({
     width: 45,
     height: 45,
     backgroundColor: '#F6F6F6',
+    position: 'absolute',
+    top: 0,
+    right: 0,
   },
 
   cartIcon: {
@@ -190,84 +115,6 @@ const styles = StyleSheet.create({
 
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5,
-  },
-
-  productCard: {
-    width: '90%',
-    height: (Dimensions.get('screen').width * 32) / 100,
-    flexDirection: 'row',
-    backgroundColor: '#F6F6F6',
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-
-  productImageHolder: {
-    backgroundColor: 'green',
-    width: '33%',
-    height: '100%',
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
-  },
-
-  productInformation: {
-    width: '57%',
-    height: '100%',
-    paddingLeft: 16,
-    paddingTop: 10,
-  },
-
-  productImage: {
-    width: '100%',
-    height: '100%',
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
-  },
-
-  cardHeader: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginBottom: 7,
-  },
-
-  cardModel: {
-    backgroundColor: 'black',
-    color: 'white',
-    width: 60,
-    paddingTop: 2,
-    paddingBottom: 2,
-    borderRadius: 5,
-    textAlign: 'center',
-    marginBottom: 6,
-  },
-
-  cardReleaseDate: {
-    fontSize: 10,
-  },
-
-  cardPrice: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    position: 'absolute',
-    bottom: 10,
-    left: 20,
-  },
-
-  productSlectionBtn: {
-    backgroundColor: '#EEEEEE',
-    width: '10%',
-    height: '100%',
-    borderTopRightRadius: 5,
-    borderBottomRightRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  rightIcon: {
-    height: 20,
-    width: 20,
-    fontSize: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 
