@@ -32,12 +32,6 @@ const HomeScreen = (props) => {
 
   const { loading, error, products } = productList;
 
-  const loadProducts = useCallback(async () => {
-    setIsRefreshing(true);
-    await dispatch(listProducts());
-    setIsRefreshing(false);
-  }, [dispatch, setIsRefreshing]);
-
   useEffect(() => {
     listProducts()(dispatch);
   }, [dispatch]);
