@@ -11,7 +11,7 @@ function CartScreen(props) {
   return (
     <View style={styles.Cart}>
       <Header_Back />
-      <PageHeader>Carts</PageHeader>
+      <PageHeader >Carts</PageHeader>
       <CartCard />
       <View style={styles.Bill}>
         <View style={styles.Qty}>
@@ -24,7 +24,10 @@ function CartScreen(props) {
           <Text style={styles.TotalValue}>$ 120</Text>
         </View>
       </View>
-      <Footer style={styles.Footer} />
+
+      <View style={styles.FooterCart}>
+        <Footer />
+      </View>
     </View>
   );
 }
@@ -74,6 +77,15 @@ const styles = StyleSheet.create({
     width: '100%',
     marginLeft: 20,
     position: 'absolute',
+  },
+
+  FooterCart: {
+    height: 60,
+    width: '100%',
+    bottom: 25,
+    position: 'absolute',
+    marginLeft: 20,
+    marginRight: 20,
   },
 });
 

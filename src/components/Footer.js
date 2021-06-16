@@ -4,6 +4,8 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 function Footer(props) {
+  const { onPress } = props;
+
   return (
     <View style={styles.Footer}>
       <View
@@ -14,6 +16,7 @@ function Footer(props) {
         }}
       />
       <TouchableOpacity
+        onPress={onPress}
         style={{
           height: 45,
           backgroundColor: 'black',

@@ -29,14 +29,11 @@ export const listProducts = () => async (dispatch) => {
       }
     );
 
-    console.log('????????', info);
-
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: info.data.sneakers,
     });
   } catch (error) {
-    console.log('!!!!!!!', error);
     dispatch({
       type: PRODUCT_LIST_FAIL,
       payload:
