@@ -1,5 +1,8 @@
 # Kiatu
 
+<img width="452" alt="Screen Shot 2021-06-16 at 23 52 01" src="https://user-images.githubusercontent.com/48021034/122299273-1092c000-cefe-11eb-9921-0754185b5104.png">
+
+
 ## Description
 Sneaker City is a brand new online-only store for sneaker enthusiasts. This isn’t your average e-commerce shop – it’s a curated  experience that shows just the latest in sneaker trends. 
 
