@@ -1,57 +1,65 @@
 /** @format */
 
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { listProducts } from '../store/actions/viewSneakers';
 import {
-  Image,
   StyleSheet,
   Text,
   View,
   Dimensions,
   TextInput,
   SafeAreaView,
-  StatusBar,
   ScrollView,
-  FlatList,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ProductCards from '../components/Cards/ProductCards';
 
 const HomeScreen = (props) => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [productItems, setProductItems] = useState();
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   const dispatch = useDispatch();
 
-  const productList = useSelector((state) => state.productsList);
+  const { navigation } = props;
+
+  const productList = useSelector((state) => ({
+    products: state.productsList.products,
+    loading: state.productsList.loading,
+    error: state.productsList.error,
+  }));
 
   const { loading, error, products } = productList;
 
-  const loadProducts = useCallback(async () => {
-    setIsRefreshing(true);
-    await dispatch(listProducts());
-    setIsRefreshing(false);
-  }, [dispatch, setIsRefreshing]);
+  useEffect(() => {
+    listProducts()(dispatch);
+  }, [dispatch]);
 
   useEffect(() => {
-    loadProducts();
-  }, []);
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const onChangeSearch = (query) => setSearchQuery(query);
-  const searchResult = useMemo(() => {
-    let res = [];
-    if (productList.products !== undefined) {
-      res = productList.products.filter(
-        (product) => product.model === searchQuery
-      );
+    if (products) {
+      setProductItems(products);
     }
-    return res.length > 0 ? res : productList;
-  }, [searchQuery]);
+  }, [products]);
+
+  const onChangeSearch = (query) => {
+    setSearchQuery(query);
+
+    if (products && products.length > 0) {
+      const filterProduct = products.filter((item) =>
+        item.brandName.toLowerCase().includes(query.toLowerCase())
+      );
+
+      if (filterProduct.length > 0) {
+        setProductItems(filterProduct);
+      } else {
+        setProductItems(products);
+      }
+    }
+  };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.homeHeader}>
         <Text style={styles.homeTitle}>Recent Sneakers</Text>
         <View style={styles.cart}>
@@ -69,27 +77,26 @@ const HomeScreen = (props) => {
           onChangeText={onChangeSearch}
         />
       </View>
-      {loadProducts !== undefined ? (
-        // <FlatList
-        //       onRefresh={loadProducts}
-        //       refreshing={isRefreshing}
-        //       keyExtractor={(item, index) => index.toString()}
-        //       // style={styles.itemList}
-        //       showsVerticalScrollIndicator={false}
-        //       data={searchResult}
-        //       renderItem={(itemData) => <ProductCards {...props} item={itemData} />}
-        //     />
+      {productItems && (
         <ScrollView>
-          {searchResult.length > 0
-            ? searchResult.map((product, i) => (
-                <ProductCards key={i} item={product} />
-              ))
-            : null}
+          {productItems.length > 0 ? (
+            productItems.map((product, i) => (
+              <ProductCards
+                key={i}
+                item={product}
+                onPress={() =>
+                  navigation.navigate('Product', { productId: product.id })
+                }
+              />
+            ))
+          ) : (
+            <View>
+              <Text>no result found</Text>
+            </View>
+          )}
         </ScrollView>
-      ) : (
-        <View>1</View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -98,6 +105,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 
   homeHeader: {
@@ -130,8 +139,8 @@ const styles = StyleSheet.create({
   },
 
   searchArea: {
-    width: '90%',
-    height: (Dimensions.get('screen').width * 16) / 100,
+    width: '100%',
+    height: (Dimensions.get('screen').width * 14) / 100,
     backgroundColor: '#F6F6F6',
     marginBottom: 17,
     borderRadius: 5,
@@ -143,7 +152,7 @@ const styles = StyleSheet.create({
   magnify: {
     width: '15%',
     height: '100%',
-    fontSize: 28,
+    fontSize: 20,
     color: '#6C6C6C',
     textAlignVertical: 'center',
     textAlign: 'center',
@@ -152,7 +161,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: '85%',
+    width: '90%',
     height: '100%',
     fontSize: 14,
 
