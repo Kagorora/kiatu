@@ -17,20 +17,23 @@ export const listProducts = () => async (dispatch) => {
       'Content-Type': 'application/json',
     };
 
-    const info = await fetch(`http://localhost:3000/api/sneakers`, {
-      method: 'GET',
-      headers: HEADERS,
-      body: JSON.stringify(payload),
-    });
+    const info = await axios(
+      `https://kiatu-backend.herokuapp.com/api/sneakers`,
+      {
+        method: 'GET',
+        headers: HEADERS,
+        // body: JSON.stringify(payload),
+      }
+    );
 
-    console.log('>>>>>>>>>>>>>>>>>', info);
+    console.log('>>>>>', info);
 
-    dispatch({
-      type: PRODUCT_LIST_SUCCESS,
-      payload: sneakers,
-    });
+    // dispatch({
+    //   type: PRODUCT_LIST_SUCCESS,
+    //   payload: info.data.sneakers,
+    // });
   } catch (error) {
-    console.log('#################', error);
+    console.log('#################>', error);
     dispatch({
       type: PRODUCT_LIST_FAIL,
       payload:

@@ -55,9 +55,28 @@ function ProductScreen(props) {
         </View>
       </View>
 
-      <View>
-        <Text>November 23, 2021</Text>
-        <Text>30 $</Text>
+      <View style={styles.OneProduct_Info}>
+        <Text style={styles.price}>Nike One Orange</Text>
+        <Text style={styles.ReleaseDate}>November 23, 2021</Text>
+        <Text style={styles.price}>$ 30</Text>
+      </View>
+
+      <View style={styles.Sizes_container}>
+        <View style={styles.Sizes}>
+          <Text style={styles.Size}>Size 45</Text>
+          <Text style={styles.Text}>Available Quantity</Text>
+          <Text style={styles.Quantity}>10</Text>
+        </View>
+
+        <View style={styles.LineSeparatorContainer}>
+          <View style={styles.LineSeparator}></View>
+        </View>
+
+        <View style={styles.Sizes}>
+          <Text style={styles.Size}>Size 45</Text>
+          <Text style={styles.Text}>Available Quantity</Text>
+          <Text style={styles.Quantity}>10</Text>
+        </View>
       </View>
 
       <View style={styles.Footer}>
@@ -99,7 +118,6 @@ const styles = StyleSheet.create({
   },
 
   OneProductInfo: {
-    backgroundColor: 'red',
     width: '100%',
     height: '50%',
   },
@@ -142,12 +160,10 @@ const styles = StyleSheet.create({
 
   smallShoes: {
     width: '100%',
-    backgroundColor: 'yellow',
     height: '15%',
   },
 
   smallShoes_item: {
-    backgroundColor: 'green',
     width: '15%',
     height: '100%',
     marginLeft: 5,
@@ -160,6 +176,76 @@ const styles = StyleSheet.create({
     marginRight: 8,
     borderRadius: 5,
     overflow: 'hidden',
+  },
+
+  OneProduct_Info: {
+    marginTop: 18,
+    height: 60,
+  },
+
+  ReleaseDate: {
+    marginTop: 3,
+    marginBottom: 3,
+    fontSize: 12,
+  },
+  price: {
+    fontWeight: 'bold',
+  },
+
+  Sizes_container: {
+    width: '100%',
+    height: 90,
+    // backgroundColor: 'black',
+    marginTop: 18,
+    flexDirection: 'row',
+  },
+
+  Sizes: {
+    height: '80%',
+    width: 110,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 5,
+    paddingTop: 8,
+    paddingBottom: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 20,
+    borderWidth: 1,
+    borderColor: '#E4AC4D',
+  },
+
+  LineSeparatorContainer: {
+    height: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  LineSeparator: {
+    borderRightWidth: 1,
+    marginLeft: 0,
+    marginRight: 15,
+    borderColor: '#8C8C8C',
+    height: '60%',
+  },
+
+  Size: {
+    fontSize: 12,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+
+  Text: {
+    fontSize: 10,
+    textAlign: 'center',
+    marginTop: 3,
+    marginBottom: 3,
+  },
+
+  Quantity: {
+    fontSize: 10,
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 
   Footer: {
