@@ -1,6 +1,7 @@
 /** @format */
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Image,
   StyleSheet,
@@ -8,80 +9,111 @@ import {
   View,
   Dimensions,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native';
-import Footer from '../components/Footer.js';
+import Footer from '../components/Footer';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { viewProductDetailAction } from '../store/actions/viewSneakers';
 
 function ProductScreen(props) {
+  const { navigation, route } = props;
+
+  const { productId } = route.params;
+
+  const dispatch = useDispatch();
+
+  const selector = useSelector((state) => ({
+    loading: state.productsList.productDetailLoading,
+    error: state.productsList.productDetailError,
+    product: state.productsList.productDetailSuccess,
+  }));
+
+  const { product, error, loading } = selector;
+
+  useEffect(() => {
+    if (productId) {
+      viewProductDetailAction(productId)(dispatch);
+    }
+  }, [dispatch, productId]);
+
   return (
     <View style={styles.productScreen}>
       <View style={styles.homeHeader}>
-        <View style={styles.back}>
+        <TouchableOpacity
+          style={styles.back}
+          onPress={() => navigation.goBack()}
+        >
           <MaterialCommunityIcons
             name="chevron-left"
             style={styles.rightIcon}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.cartConctainer}>
           <MaterialCommunityIcons name="cart-outline" style={styles.cartIcon} />
         </View>
       </View>
 
-      <View style={styles.OneProductInfo}>
-        <Text style={styles.OneProductModel}>Nike One Orange</Text>
-        <View style={styles.OneShoeImage}>
-          <Image
-            style={styles.ShoeImg}
-            source={require('../assets/ketch.jpeg')}
-          />
+      {error && error.message && !loading && !product && (
+        <View>
+          <Text>{error.message}</Text>
         </View>
-        <View style={styles.smallShoes}>
-          <View style={styles.smallShoes_item}>
-            <Image
-              style={styles.ShoeImg}
-              source={require('../assets/blue.jpeg')}
-            />
+      )}
+      {loading && (
+        <View>
+          <Text>Loading ...</Text>
+        </View>
+      )}
 
-            <Image
-              style={styles.ShoeImg}
-              source={require('../assets/gray.jpeg')}
-            />
+      {product && !loading && (
+        <View>
+          <View style={styles.OneProductInfo}>
+            {/* <Text style={styles.OneProductModel}>{product.brandName}</Text> */}
+            <View style={styles.OneShoeImage}>
+              <Image
+                style={styles.ShoeImg}
+                source={{ uri: product.picture[0] }}
+              />
+            </View>
 
-            <Image
-              style={styles.ShoeImg}
-              source={require('../assets/ketch.jpeg')}
-            />
+            <View style={styles.smallShoes}>
+              <View style={styles.smallShoes_item}>
+                {product.picture.length > 0 ? (
+                  product.picture.map((image) => (
+                    <Image style={styles.ShoeImg} source={{ uri: image }} />
+                  ))
+                ) : (
+                  <View>
+                    <Text>no result found</Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          </View>
+          <View style={styles.OneProduct_Info}>
+            <Text style={styles.price}>Nike One Orange</Text>
+            <Text style={styles.ReleaseDate}>November 23, 2021</Text>
+            <Text style={styles.price}>$ 30</Text>
+          </View>
+          <View style={styles.Sizes_container}>
+            {product.sizes.length > 0 &&
+              product.sizes.map((size) => (
+                <View style={styles.Sizes}>
+                  <Text style={styles.Size}>{size.size}</Text>
+                  <Text style={styles.Text}>Available Quantity</Text>
+                  <Text style={styles.Quantity}>{size.quantity}</Text>
+                </View>
+              ))}
+
+            {/* <View style={styles.LineSeparatorContainer}>
+              <View style={styles.LineSeparator}></View>
+            </View> */}
+          </View>
+
+          <View style={styles.FooterProduct}>
+            <Footer style={styles.FooterProduct} />
           </View>
         </View>
-      </View>
-
-      <View style={styles.OneProduct_Info}>
-        <Text style={styles.price}>Nike One Orange</Text>
-        <Text style={styles.ReleaseDate}>November 23, 2021</Text>
-        <Text style={styles.price}>$ 30</Text>
-      </View>
-
-      <View style={styles.Sizes_container}>
-        <View style={styles.Sizes}>
-          <Text style={styles.Size}>Size 45</Text>
-          <Text style={styles.Text}>Available Quantity</Text>
-          <Text style={styles.Quantity}>10</Text>
-        </View>
-
-        <View style={styles.LineSeparatorContainer}>
-          <View style={styles.LineSeparator}></View>
-        </View>
-
-        <View style={styles.Sizes}>
-          <Text style={styles.Size}>Size 45</Text>
-          <Text style={styles.Text}>Available Quantity</Text>
-          <Text style={styles.Quantity}>10</Text>
-        </View>
-      </View>
-
-      <View style={styles.Footer}>
-        <Footer />
-      </View>
+      )}
     </View>
   );
 }
@@ -90,7 +122,6 @@ const styles = StyleSheet.create({
   productScreen: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: StatusBar.currentHeight + 5,
   },
 
   homeHeader: {
@@ -168,6 +199,9 @@ const styles = StyleSheet.create({
     height: '100%',
     marginLeft: 5,
     flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: 'gold',
+    borderRadius: 5,
   },
 
   ShoeImg: {
@@ -198,6 +232,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'black',
     marginTop: 18,
     flexDirection: 'row',
+    // bottom: -30,
   },
 
   Sizes: {
@@ -248,12 +283,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  Footer: {
-    position: 'absolute',
+  FooterProduct: {
+    height: 60,
     width: '100%',
     bottom: 0,
-    marginLeft: 20,
-    marginBottom: 20,
   },
 });
 

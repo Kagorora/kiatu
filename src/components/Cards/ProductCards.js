@@ -1,13 +1,22 @@
 /** @format */
 
 import React from 'react';
-import { Image, StyleSheet, Text, View, Dimensions } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 function ProductCards(props) {
-  const { item } = props;
+  const { item, onPress } = props;
+
   return (
-    <View style={styles.productCard}>
+    <TouchableOpacity style={styles.productCard} onPress={onPress}>
       <View style={styles.productImageHolder}>
         <Image
           style={styles.productImage}
@@ -27,7 +36,7 @@ function ProductCards(props) {
       <View style={styles.productSlectionBtn}>
         <MaterialCommunityIcons name="chevron-right" style={styles.rightIcon} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
