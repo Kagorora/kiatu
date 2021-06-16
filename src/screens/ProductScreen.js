@@ -110,7 +110,10 @@ function ProductScreen(props) {
           </View>
 
           <View style={styles.FooterProduct}>
-            <Footer style={styles.FooterProduct} />
+            <Footer
+              onPress={() => navigation.navigate('Cart')}
+              style={styles.FooterProduct}
+            />
           </View>
         </View>
       )}

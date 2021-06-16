@@ -8,14 +8,25 @@ import {
   View,
   Dimensions,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 function Header_Back(props) {
+  const { navigation, route } = props;
+
   return (
     <View style={styles.homeHeader}>
       <View style={styles.back}>
-        <MaterialCommunityIcons name="chevron-left" style={styles.rightIcon} />
+        <TouchableOpacity
+          style={styles.back}
+          onPress={() => navigation.goBack()}
+        >
+          <MaterialCommunityIcons
+            name="chevron-left"
+            style={styles.rightIcon}
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.cartConctainer}>
         <MaterialCommunityIcons name="cart-outline" style={styles.cartIcon} />
