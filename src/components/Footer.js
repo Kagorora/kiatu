@@ -43,4 +43,12 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 41,
   },
+
+  Footer: {
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+    marginLeft: 20,
+    marginBottom: 20,
+  },
 });

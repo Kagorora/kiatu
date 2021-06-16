@@ -1,8 +1,9 @@
 /** @format */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+
 import { useSelector, useDispatch } from 'react-redux';
-import { listProducts } from '../store/actions/viewSneakers.js';
+import { listProducts } from '../store/actions/viewSneakers';
 import {
   Image,
   StyleSheet,
@@ -12,19 +13,42 @@ import {
   TextInput,
   SafeAreaView,
   StatusBar,
+  ScrollView,
+  FlatList,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ProductCards from '../components/Cards/ProductCards';
 
 const HomeScreen = (props) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => state.productsList);
+
   const { loading, error, products } = productList;
 
+  const loadProducts = useCallback(async () => {
+    setIsRefreshing(true);
+    await dispatch(listProducts());
+    setIsRefreshing(false);
+  }, [dispatch, setIsRefreshing]);
+
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+    loadProducts();
+  }, []);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const onChangeSearch = (query) => setSearchQuery(query);
+  const searchResult = useMemo(() => {
+    let res = [];
+    if (productList.products !== undefined) {
+      res = productList.products.filter(
+        (product) => product.model === searchQuery
+      );
+    }
+    return res.length > 0 ? res : productList;
+  }, [searchQuery]);
 
   return (
     <View style={styles.container}>
@@ -39,13 +63,32 @@ const HomeScreen = (props) => {
         <MaterialCommunityIcons name="magnify" style={styles.magnify} />
         <TextInput
           style={styles.input}
-          value={String}
+          value={searchQuery}
           placeholder="What are you looking for ?"
-          keyboardType="string"
+          keyboardType="default"
+          onChangeText={onChangeSearch}
         />
       </View>
-
-      <ProductCards />
+      {loadProducts !== undefined ? (
+        // <FlatList
+        //       onRefresh={loadProducts}
+        //       refreshing={isRefreshing}
+        //       keyExtractor={(item, index) => index.toString()}
+        //       // style={styles.itemList}
+        //       showsVerticalScrollIndicator={false}
+        //       data={searchResult}
+        //       renderItem={(itemData) => <ProductCards {...props} item={itemData} />}
+        //     />
+        <ScrollView>
+          {searchResult.length > 0
+            ? searchResult.map((product, i) => (
+                <ProductCards key={i} item={product} />
+              ))
+            : null}
+        </ScrollView>
+      ) : (
+        <View>1</View>
+      )}
     </View>
   );
 };

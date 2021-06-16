@@ -1,23 +1,27 @@
 /** @format */
+
 import React from 'react';
 import { Image, StyleSheet, Text, View, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 function ProductCards(props) {
+  const { item } = props;
   return (
     <View style={styles.productCard}>
       <View style={styles.productImageHolder}>
         <Image
           style={styles.productImage}
-          source={require('../../assets/air-zoom-pegasus-37-mens-running-shoe-KLvDcj.jpeg')}
+          source={{
+            uri: item.picture[0],
+          }}
         />
       </View>
 
       <View style={styles.productInformation}>
-        <Text style={styles.cardHeader}>Nike One</Text>
-        <Text style={styles.cardModel}>Nike</Text>
-        <Text style={styles.cardReleaseDate}>November 23, 2021</Text>
-        <Text style={styles.cardPrice}>30 $</Text>
+        <Text style={styles.cardHeader}>{item.brandName}</Text>
+        <Text style={styles.cardModel}>{item.model}</Text>
+        <Text style={styles.cardReleaseDate}>{item.releaseDate}</Text>
+        <Text style={styles.cardPrice}>${item.price}</Text>
       </View>
 
       <View style={styles.productSlectionBtn}>
@@ -31,7 +35,7 @@ export default ProductCards;
 
 const styles = StyleSheet.create({
   productCard: {
-    width: '90%',
+    width: '100%',
     height: (Dimensions.get('screen').width * 32) / 100,
     flexDirection: 'row',
     backgroundColor: '#F6F6F6',
