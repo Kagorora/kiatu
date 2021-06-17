@@ -9,6 +9,9 @@ import {
   PRODUCT_DETAIL_REQUEST,
   PRODUCT_DETAIL_SUCCESS,
   PRODUCT_DETAIL_FAIL,
+  CART_LIST_REQUEST,
+  CART_LIST_SUCCESS,
+  CART_LIST_FAIL,
 } from '../types/types';
 
 export const listProducts = () => async (dispatch) => {
@@ -62,6 +65,30 @@ export const viewProductDetailAction = (productId) => async (dispatch) => {
     dispatch({
       type: PRODUCT_DETAIL_FAIL,
       payload: { errors: error.response.data },
+    });
+  }
+};
+
+export const viewCartListAction = () => async (dispatch) => {
+  dispatch({ type: CART_LIST_REQUEST, payload: { loading: true } });
+
+  try {
+    const res = await axios.get(
+      `https://kiatu-backend.herokuapp.com/api/orders`
+    );
+
+    dispatch({ type: CART_LIST_REQUEST, payload: { loading: false } });
+
+    dispatch({
+      type: CART_LIST_SUCCESS,
+      payload: { data: res.data.orders },
+    });
+  } catch (error) {
+    dispatch({ type: CART_LIST_REQUEST, payload: { loading: false } });
+
+    dispatch({
+      type: CART_LIST_FAIL,
+      payload: { error: error.response.data },
     });
   }
 };

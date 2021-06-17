@@ -28,13 +28,13 @@ export default function App() {
             <Stack.Screen
               name="Product"
               component={ProductScreen}
-              options={{ title: '', headerShown: false }}
+              options={{ title: 'Product', headerShown: false }}
             />
 
             <Stack.Screen
               name="Cart"
               component={CartScreen}
-              options={{ title: '', headerShown: false }}
+              options={{ title: 'Cart', headerShown: false }}
             />
           </Stack.Navigator>
         </SafeAreaView>
