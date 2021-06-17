@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Image,
@@ -14,8 +14,15 @@ import {
 import Footer from '../components/Footer';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { viewProductDetailAction } from '../store/actions/viewSneakers';
+import { AddToCartAction } from '../store/actions/viewSneakers';
 
 function ProductScreen(props) {
+  const [shoeId, setShoeId] = useState('');
+
+  const [orderSize, setOrderSize] = useState();
+
+  const [orderQuantity, setOrderQuantity] = useState();
+
   const { navigation, route } = props;
 
   const { productId } = route.params;
@@ -26,15 +33,31 @@ function ProductScreen(props) {
     loading: state.productsList.productDetailLoading,
     error: state.productsList.productDetailError,
     product: state.productsList.productDetailSuccess,
+    msg: state.productsList.cartAddSuccess,
   }));
 
-  const { product, error, loading } = selector;
+  const { product, error, loading, msg } = selector;
 
   useEffect(() => {
     if (productId) {
       viewProductDetailAction(productId)(dispatch);
     }
   }, [dispatch, productId]);
+
+  useEffect(() => {
+    let order;
+    if (shoeId && orderSize && orderQuantity) {
+      AddToCartAction(
+        shoeId,
+        (order = {
+          size: orderSize,
+          orderQuantity: orderQuantity,
+        })
+      )(dispatch);
+    }
+  }, [shoeId, dispatch]);
+
+  console.log('!!!!!!!!!!', msg);
 
   return (
     <View style={styles.productScreen}>
@@ -93,10 +116,11 @@ function ProductScreen(props) {
               </View>
             </View>
           </View>
+
           <View style={styles.OneProduct_Info}>
-            <Text style={styles.price}>Nike One Orange</Text>
-            <Text style={styles.ReleaseDate}>November 23, 2021</Text>
-            <Text style={styles.price}>$ 30</Text>
+            <Text style={styles.price}>{product.model}</Text>
+            <Text style={styles.ReleaseDate}>{product.releaseDate}</Text>
+            <Text style={styles.price}>$ {product.price}</Text>
           </View>
           <View style={styles.Sizes_container}>
             {product.sizes.length > 0 &&
@@ -115,7 +139,12 @@ function ProductScreen(props) {
 
           <View style={styles.FooterProduct}>
             <Footer
-              onPress={() => navigation.navigate('Cart')}
+              onPress={() => {
+                navigation.navigate('Cart');
+                setShoeId(product.id);
+                setOrderQuantity(product.sizes[0].quantity);
+                setOrderSize(product.sizes[0].size);
+              }}
               style={styles.FooterProduct}
             />
           </View>
