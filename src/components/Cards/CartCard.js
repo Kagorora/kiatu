@@ -4,19 +4,20 @@ import { Image, StyleSheet, Text, View, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const CartCard = (props) => {
+  const { item } = props;
   return (
     <View style={styles.productCard}>
       <View style={styles.productImageHolder}>
         <Image
           style={styles.productImage}
-          source={require('../../assets/air-zoom-pegasus-37-mens-running-shoe-KLvDcj.jpeg')}
+          source={{ uri: item.order.picture[0] }}
         />
       </View>
 
       <View style={styles.productInformation}>
-        <Text style={styles.cardHeader}>Nike One</Text>
-        <Text style={styles.cardReleaseDate}>November 23, 2021</Text>
-        <Text style={styles.cartPrice}>$ 30</Text>
+        <Text style={styles.cardHeader}>{item.order.model}</Text>
+        <Text style={styles.cardReleaseDate}>{item.order.releaseDate}</Text>
+        <Text style={styles.cartPrice}>$ {item.order.price}</Text>
 
         <View style={styles.CartIncrease}>
           <View style={styles.increase}>

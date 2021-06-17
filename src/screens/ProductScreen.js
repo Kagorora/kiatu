@@ -78,8 +78,12 @@ function ProductScreen(props) {
             <View style={styles.smallShoes}>
               <View style={styles.smallShoes_item}>
                 {product.picture.length > 0 ? (
-                  product.picture.map((image) => (
-                    <Image style={styles.ShoeImg} source={{ uri: image }} />
+                  product.picture.map((image, i) => (
+                    <Image
+                      key={i}
+                      style={styles.ShoeImg}
+                      source={{ uri: image }}
+                    />
                   ))
                 ) : (
                   <View>
@@ -96,8 +100,8 @@ function ProductScreen(props) {
           </View>
           <View style={styles.Sizes_container}>
             {product.sizes.length > 0 &&
-              product.sizes.map((size) => (
-                <View style={styles.Sizes}>
+              product.sizes.map((size, i) => (
+                <View key={i} style={styles.Sizes}>
                   <Text style={styles.Size}>{size.size}</Text>
                   <Text style={styles.Text}>Available Quantity</Text>
                   <Text style={styles.Quantity}>{size.quantity}</Text>
