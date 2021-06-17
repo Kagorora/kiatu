@@ -10,6 +10,9 @@ import {
   CART_LIST_REQUEST,
   CART_LIST_SUCCESS,
   CART_LIST_FAIL,
+  CART_ADD_REQUEST,
+  CART_ADD_SUCCESS,
+  CART_ADD_FAIL,
 } from '../types/types.js';
 
 const initialState = {
@@ -22,6 +25,10 @@ const initialState = {
   cartListLoading: false,
   cartListSuccess: undefined,
   cartListError: undefined,
+
+  cartAddLoading: false,
+  cartAddSuccess: undefined,
+  cartAddError: undefined,
 };
 
 export const productListReducer = (state = initialState, action) => {
@@ -51,6 +58,15 @@ export const productListReducer = (state = initialState, action) => {
 
     case CART_LIST_FAIL:
       return { ...state, cartListError: action.payload.errors };
+
+    case CART_ADD_REQUEST:
+      return { ...state, cartAddLoading: action.payload.loading };
+
+    case CART_ADD_SUCCESS:
+      return { ...state, cartAddSuccess: action.payload.data };
+
+    case CART_ADD_FAIL:
+      return { ...state, cartAddError: action.payload.errors };
 
     default:
       return state;

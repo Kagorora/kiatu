@@ -16,11 +16,11 @@
 
 - Clone the project through your terminal(VScode terminal)
 
-      git clone https://github.com/Kagorora/Sneaker-City-Backend.git
+      git clone https://github.com/Kagorora/kiatu.git
 
 - Go to the project and Open the project
 
-       cd Sneaker-City-Backend && cd .
+       cd Kiatu && cd .
 
 - Open the feature through its branch
 
