@@ -77,25 +77,27 @@ const HomeScreen = (props) => {
           onChangeText={onChangeSearch}
         />
       </View>
-      {productItems && (
-        <ScrollView>
-          {productItems.length > 0 ? (
-            productItems.map((product, i) => (
-              <ProductCards
-                key={i}
-                item={product}
-                onPress={() =>
-                  navigation.navigate('Product', { productId: product.id })
-                }
-              />
-            ))
-          ) : (
-            <View>
-              <Text>no result found</Text>
-            </View>
-          )}
-        </ScrollView>
-      )}
+      <ScrollView>
+        {productItems && (
+          <View>
+            {productItems.length > 0 ? (
+              productItems.map((product, i) => (
+                <ProductCards
+                  key={i}
+                  item={product}
+                  onPress={() =>
+                    navigation.navigate('Product', { productId: product.id })
+                  }
+                />
+              ))
+            ) : (
+              <View>
+                <Text>no result found</Text>
+              </View>
+            )}
+          </View>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };
