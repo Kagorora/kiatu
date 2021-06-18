@@ -15,6 +15,9 @@ import {
   CART_ADD_REQUEST,
   CART_ADD_SUCCESS,
   CART_ADD_FAIL,
+  CART_REMOVE_REQUEST,
+  CART_REMOVE_SUCCESS,
+  CART_REMOVE_FAIL,
 } from '../types/types';
 
 export const listProducts = () => async (dispatch) => {
@@ -105,8 +108,6 @@ export const AddToCartAction = (productId, order) => async (dispatch) => {
       order
     );
 
-    console.log('!!!!!!!!!', res);
-
     dispatch({ type: CART_ADD_REQUEST, payload: { loading: false } });
 
     dispatch({
@@ -118,6 +119,30 @@ export const AddToCartAction = (productId, order) => async (dispatch) => {
 
     dispatch({
       type: CART_ADD_FAIL,
+      payload: { error: error.response.data },
+    });
+  }
+};
+
+export const RemoveToCartAction = (itemId) => async (dispatch) => {
+  dispatch({ type: CART_REMOVE_REQUEST, payload: { loading: true } });
+
+  try {
+    const res = await axios.delete(
+      `https://kiatu-backend.herokuapp.com/api/orders/${itemId}`
+    );
+
+    dispatch({ type: CART_REMOVE_REQUEST, payload: { loading: false } });
+
+    dispatch({
+      type: CART_REMOVE_SUCCESS,
+      payload: { data: res.data },
+    });
+  } catch (error) {
+    dispatch({ type: CART_REMOVE_REQUEST, payload: { loading: false } });
+
+    dispatch({
+      type: CART_REMOVE_FAIL,
       payload: { error: error.response.data },
     });
   }

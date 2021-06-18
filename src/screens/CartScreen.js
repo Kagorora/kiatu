@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -15,9 +15,16 @@ import CartCard from '../components/Cards/CartCard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { viewCartListAction } from '../store/actions/viewSneakers';
+import { RemoveToCartAction } from '../store/actions/viewSneakers';
 import { ScrollView } from 'react-native';
 
 function CartScreen(props) {
+  const [itemId, setItemId] = useState();
+
+  const [totalPrice, setTotalPrice] = useState();
+
+  const [totalQuantity, setQuantity] = useState();
+
   const { navigation } = props;
 
   const dispatch = useDispatch();
@@ -32,7 +39,25 @@ function CartScreen(props) {
 
   useEffect(() => {
     viewCartListAction()(dispatch);
-  }, [dispatch]);
+  }, [dispatch, itemId]);
+
+  useEffect(() => {
+    if (itemId) {
+    }
+    RemoveToCartAction(itemId)(dispatch);
+  }, [dispatch, itemId]);
+
+  let sum = 0;
+  let sumQty = 0;
+
+  useEffect(() => {
+    cart &&
+      cart.length > 0 &&
+      cart.map((item, i) => {
+        setTotalPrice((sum += item.order.price));
+        setQuantity((sumQty += item.orderQuantity));
+      });
+  });
 
   return (
     <ScrollView style={styles.Cart}>
@@ -57,7 +82,9 @@ function CartScreen(props) {
       {cart && (
         <View>
           {cart.length > 0 ? (
-            cart.map((order, i) => <CartCard key={i} item={order} />)
+            cart.map((order, i) => (
+              <CartCard key={i} item={order} setItemId={setItemId} />
+            ))
           ) : (
             <View>
               <Text>no result found</Text>
@@ -65,17 +92,17 @@ function CartScreen(props) {
           )}
         </View>
       )}
-      {/* <View style={styles.Bill}>
+      <View style={styles.Bill}>
         <View style={styles.Qty}>
           <Text style={styles.QuantityLabel}>Quantity</Text>
-          <Text style={styles.QuantityValue}>2</Text>
+          <Text style={styles.QuantityValue}>{totalQuantity}</Text>
         </View>
 
         <View>
           <Text style={styles.TotalLabel}>Total</Text>
-          <Text style={styles.TotalValue}>$ 120</Text>
+          <Text style={styles.TotalValue}>$ {totalPrice}</Text>
         </View>
-      </View> */}
+      </View>
 
       {/* <View style={styles.FooterCart}>
         <Footer />
@@ -87,7 +114,7 @@ function CartScreen(props) {
 const styles = StyleSheet.create({
   Cart: {
     flex: 1,
-    paddingTop: 45,
+    // paddingTop: 45,
     paddingLeft: 20,
     paddingRight: 20,
   },
@@ -125,10 +152,10 @@ const styles = StyleSheet.create({
 
   Bill: {
     height: '25%',
-    bottom: '15%',
+    bottom: '5%',
     width: '100%',
     marginLeft: 20,
-    position: 'absolute',
+    // position: 'absolute',
   },
 
   FooterCart: {

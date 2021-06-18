@@ -29,7 +29,9 @@ function ProductCards(props) {
       <View style={styles.productInformation}>
         <Text style={styles.cardHeader}>{item.brandName}</Text>
         <Text style={styles.cardModel}>{item.model}</Text>
-        <Text style={styles.cardReleaseDate}>{item.releaseDate}</Text>
+        <Text style={styles.cardReleaseDate}>
+          {item.releaseDate.split('T')[0]}
+        </Text>
         <Text style={styles.cardPrice}>${item.price}</Text>
       </View>
 

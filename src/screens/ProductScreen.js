@@ -57,8 +57,6 @@ function ProductScreen(props) {
     }
   }, [shoeId, dispatch]);
 
-  console.log('!!!!!!!!!!', msg);
-
   return (
     <View style={styles.productScreen}>
       <View style={styles.homeHeader}>
@@ -119,7 +117,9 @@ function ProductScreen(props) {
 
           <View style={styles.OneProduct_Info}>
             <Text style={styles.price}>{product.model}</Text>
-            <Text style={styles.ReleaseDate}>{product.releaseDate}</Text>
+            <Text style={styles.ReleaseDate}>
+              {product.releaseDate.split('T')[0]}
+            </Text>
             <Text style={styles.price}>$ {product.price}</Text>
           </View>
           <View style={styles.Sizes_container}>

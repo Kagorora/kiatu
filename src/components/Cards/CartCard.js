@@ -2,9 +2,10 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
 
 const CartCard = (props) => {
-  const { item } = props;
+  const { item, setItemId } = props;
   return (
     <View style={styles.productCard}>
       <View style={styles.productImageHolder}>
@@ -16,7 +17,9 @@ const CartCard = (props) => {
 
       <View style={styles.productInformation}>
         <Text style={styles.cardHeader}>{item.order.model}</Text>
-        <Text style={styles.cardReleaseDate}>{item.order.releaseDate}</Text>
+        <Text style={styles.cardReleaseDate}>
+          {item.order.releaseDate.split('T')[0]}
+        </Text>
         <Text style={styles.cartPrice}>$ {item.order.price}</Text>
 
         <View style={styles.CartIncrease}>
@@ -30,12 +33,17 @@ const CartCard = (props) => {
         </View>
       </View>
 
-      <View style={styles.productSlectionBtn}>
+      <TouchableOpacity
+        onPress={() => setItemId(item.id)}
+        style={styles.productSlectionBtn}
+      >
+        {/* <View > */}
         <MaterialCommunityIcons
           name="delete-outline"
           style={styles.rightIcon}
         />
-      </View>
+        {/* </View> */}
+      </TouchableOpacity>
     </View>
   );
 };
