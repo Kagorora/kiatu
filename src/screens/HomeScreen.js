@@ -11,6 +11,7 @@ import {
   TextInput,
   SafeAreaView,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ProductCards from '../components/Cards/ProductCards';
@@ -63,7 +64,12 @@ const HomeScreen = (props) => {
       <View style={styles.homeHeader}>
         <Text style={styles.homeTitle}>Recent Sneakers</Text>
         <View style={styles.cart}>
-          <MaterialCommunityIcons name="cart-outline" style={styles.cartIcon} />
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+            <MaterialCommunityIcons
+              name="cart-outline"
+              style={styles.cartIcon}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -116,6 +122,7 @@ const styles = StyleSheet.create({
     height: (Dimensions.get('screen').width * 10) / 100,
     marginBottom: 21,
     flexDirection: 'row',
+    marginTop: 10,
   },
 
   cart: {

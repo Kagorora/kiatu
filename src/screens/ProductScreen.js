@@ -70,7 +70,12 @@ function ProductScreen(props) {
           />
         </TouchableOpacity>
         <View style={styles.cartConctainer}>
-          <MaterialCommunityIcons name="cart-outline" style={styles.cartIcon} />
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+            <MaterialCommunityIcons
+              name="cart-outline"
+              style={styles.cartIcon}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 

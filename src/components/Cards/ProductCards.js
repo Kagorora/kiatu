@@ -72,14 +72,14 @@ const styles = StyleSheet.create({
   productInformation: {
     width: '57%',
     height: '100%',
-    paddingLeft: 16,
+    paddingLeft: 20,
     paddingTop: 10,
   },
 
   cardHeader: {
     fontWeight: 'bold',
     fontSize: 20,
-    marginBottom: 7,
+    marginBottom: 5,
   },
 
   cardModel: {
@@ -90,18 +90,19 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     borderRadius: 5,
     textAlign: 'center',
-    marginBottom: 6,
+    marginBottom: 4,
   },
 
   cardReleaseDate: {
     fontSize: 10,
+    marginBottom: 20,
   },
 
   cardPrice: {
     fontSize: 18,
     fontWeight: 'bold',
     position: 'absolute',
-    bottom: 10,
+    bottom: 5,
     left: 20,
   },
 

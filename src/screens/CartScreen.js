@@ -74,7 +74,9 @@ function CartScreen(props) {
           />
         </TouchableOpacity>
         <View style={styles.cartConctainer}>
-          <MaterialCommunityIcons name="cart-outline" style={styles.cartIcon} />
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <MaterialCommunityIcons name="home" style={styles.cartIcon} />
+          </TouchableOpacity>
         </View>
       </View>
 
